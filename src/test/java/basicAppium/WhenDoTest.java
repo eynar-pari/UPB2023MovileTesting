@@ -13,15 +13,15 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 
-public class CalculatorXPathTest {
+public class WhenDoTest {
     AppiumDriver phone;
     @BeforeEach
     public void openApp() throws MalformedURLException {
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("deviceName","UPB2023_Android9");
         capabilities.setCapability("platformVersion","9.0");
-        capabilities.setCapability("appPackage","com.android.calculator2");
-        capabilities.setCapability("appActivity","com.android.calculator2.Calculator");
+        capabilities.setCapability("appPackage","com.vrproductiveapps.whendo");
+        capabilities.setCapability("appActivity","com.vrproductiveapps.whendo.ui.HomeActivity");
         capabilities.setCapability("platformName","Android");
         capabilities.setCapability("automationName","uiautomator2");
 
@@ -35,22 +35,21 @@ public class CalculatorXPathTest {
     }
 
     @Test
-    public void verifyAddTwoNumber() throws InterruptedException {
-        // click  5
-        phone.findElement(By.xpath("//android.widget.Button[@text='5']")).click();
-        // click +
-        phone.findElement(By.xpath("//android.widget.Button[@text='+']")).click();
-        // click 7
-        phone.findElement(By.xpath("//android.widget.Button[@text='7']")).click();
-        // click  =
-        phone.findElement(By.xpath("//android.widget.Button[@content-desc=\"equals\"]")).click();
-         // verification  expectedResult 12 = actualResult 12
-        Thread.sleep(5000);
-        String expectedResult="12";
-        String actualResult= phone.findElement(By.xpath("//android.widget.TextView[@resource-id=\"com.android.calculator2:id/result\"]")).getText();
-        Assertions.assertEquals(expectedResult,actualResult,"ERROR la suma esta mal");
-    }
+    public void verifyCreateTask() throws InterruptedException {
+           String taskName ="UPBExample";
+          //click +
+           phone.findElement(By.id("com.vrproductiveapps.whendo:id/fab")).click();
+            // set titulo
+           phone.findElement(By.id("com.vrproductiveapps.whendo:id/noteTextTitle")).sendKeys(taskName);
+           // set notes
+           phone.findElement(By.id("com.vrproductiveapps.whendo:id/noteTextNotes")).sendKeys("this is a note");
+          // click save
+          phone.findElement(By.id("com.vrproductiveapps.whendo:id/saveItem")).click();
+          // verificar que la tarea esta creada
+           Assertions.assertTrue( phone.findElements(By.xpath("//android.widget.TextView[@text='"+taskName+"']")).size() >= 1,"ERROR ! no se creo la tarea");
 
+
+    }
 
 
 }
